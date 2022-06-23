@@ -1,0 +1,2 @@
+# dynamic-memory-access-POC
+An example of dynamically finding variable location at runtime based on the module base address of the host process and a predetermined offset found through debugging. The memory_edit_target.cpp file is the code for the victim process. The memory_edit_actor.cpp is the process that performs the memory read/edit. The offset may need to be updated for each newly compiled target binary.
