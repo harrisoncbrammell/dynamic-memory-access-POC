@@ -1,6 +1,3 @@
-// memory_edit_actor.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include <Windows.h>
 #include <tchar.h>
@@ -50,7 +47,12 @@ int readInt(DWORD pidArg) {
     HANDLE hTarget = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pidArg);
     SIZE_T num;
     int readValue;
-    uintptr_t targetaddress = GetModuleBaseAddress(getPIDWindowTitle("target"), L"memory_edit_target.exe")+0x5044;
+    BOOL is32 = FALSE;
+    int checkVal = IsWow64Process(hTarget,&is32);
+    uintptr_t targetaddress = GetModuleBaseAddress(getPIDWindowTitle("target"), L"memory_edit_target.exe") + 0x5044;
+    if(is32) {
+       targetaddress = GetModuleBaseAddress(getPIDWindowTitle("target"), L"memory_edit_target.exe") + 0x5018;
+    }
     ReadProcessMemory(hTarget, (void*)targetaddress, &readValue, sizeof(readValue), &num);
     std::cout << readValue << std::endl;
     return readValue;
